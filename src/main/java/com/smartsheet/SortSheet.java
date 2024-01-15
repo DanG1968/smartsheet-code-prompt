@@ -1,6 +1,6 @@
 package com.smartsheet;
 
-// Add Maven library "com.smartsheet:smartsheet-sdk-java:2.2.3" to access Smartsheet Java SDK
+// Add Maven library "com.smartsheet:smartsheet-sdk-java:3.2.0" to access Smartsheet Java SDK
 
 import com.smartsheet.api.Smartsheet;
 import com.smartsheet.api.models.SortSpecifier;
@@ -25,18 +25,18 @@ public class SortSheet {
 
     public static void main(final String[] args) {
 
+        int sheetSize = 0;
+
         try {
             // Initialize client. Gets API access token from SMARTSHEET_ACCESS_TOKEN variable
-            Smartsheet smartsheet = SmartsheetFactory.createDefaultClient("C4QWUNdYm67lgrhpTFjbZufc0M8Tm2AEZZujr");
+            Smartsheet smartsheet = SmartsheetFactory.createDefaultClient();
 
             Sheet sheet = smartsheet.sheetResources().importCsv ("data.csv", "data", 0, 0);
-
-            int sheetSize = sheet.getRows().size();
 
             // Load the entire sheet
             sheet = smartsheet.sheetResources().getSheet(sheet.getId(), null, null, null, null, null, null, null);
             System.out.println("Loaded " + sheet.getRows().size() + " rows from sheet: " + sheet.getName());
-
+            sheetSize = sheet.getRows().size();
             // Build the column map for later reference
             for (Column column : sheet.getColumns())
                 columnMap.put(column.getTitle(), column.getId());
@@ -46,7 +46,7 @@ public class SortSheet {
             criterion.setDirection(SortDirection.ASCENDING);
             SortCriterion criterion2 = new SortCriterion();
             criterion2.setColumnId(columnMap.get("state"));
-            criterion2.setDirection(SortDirection.DESCENDING);
+            criterion2.setDirection(SortDirection.ASCENDING);
             SortSpecifier specifier = new SortSpecifier();
             specifier.setSortCriteria(Arrays.asList(criterion, criterion2));
 
@@ -77,7 +77,7 @@ public class SortSheet {
             } else {
                 // Finally, write all updated cells back to Smartsheet
                 System.out.println("Writing " + rowsToUpdate.size() + " rows back to sheet id " + sheet.getId());
-                //smartsheet.sheetResources().rowResources().updateRows(sheet.getId(), rowsToUpdate);
+                smartsheet.sheetResources().rowResources().updateRows(sheet.getId(), rowsToUpdate);
                 System.out.println("Done");
             }
         } catch (Exception ex) {
@@ -86,12 +86,6 @@ public class SortSheet {
         }
     }
 
-    /*
-     * TODO: Replace the body of this loop with your code
-     * This *example* looks for rows with a "Status" column marked "Complete" and sets the "Remaining" column to zero
-     *
-     * Return a new Row with updated cell values, else null to leave unchanged
-     */
     private static Row evaluateRowAndBuildUpdates(Row sourceRow, int sheetSize) {
         Row rowToUpdate = null;
 
@@ -116,7 +110,6 @@ public class SortSheet {
                 rowToUpdate = new Row();
                 rowToUpdate.setId(sourceRow.getId());
                 rowToUpdate.setCells(cellsToUpdate);
-
 
             }
         }
