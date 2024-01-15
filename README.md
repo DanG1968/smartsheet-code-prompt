@@ -1,4 +1,4 @@
-## java-read-write-sheet
+## smartsheet-code-prompt
 
 This is a minimal Smartsheet sample that demonstrates how to
 * Import a sheet
