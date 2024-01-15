@@ -18,7 +18,7 @@
         <dependency>
             <groupId>com.smartsheet</groupId>
             <artifactId>smartsheet-sdk-java</artifactId>
-            <version>2.2.5</version>
+            <version>3.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
