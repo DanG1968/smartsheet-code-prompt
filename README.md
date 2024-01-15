@@ -18,7 +18,7 @@ This is implemented in the `evaluateRowAndBuildUpdates()` method which you shoul
    
 * Build the application
     * `mvn compile`
-    * You may need to add a reference to the Maven library `com.smartsheet:smartsheet-sdk-java:2.2.5`
+    * You may need to add a reference to the Maven library `com.smartsheet:smartsheet-sdk-java:3.2.0`
     
 * Run the application
     * `mvn exec:java`
